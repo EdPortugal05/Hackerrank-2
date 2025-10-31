@@ -1,0 +1,62 @@
+using System;
+using System.Linq;
+
+class Solution
+{
+    static string HighestValuePalindrome(string s, int n, int k)
+    {
+        char[] arr = s.ToCharArray();
+        bool[] changed = new bool[n];
+        int l = 0, r = n - 1;
+
+        // Step 1: Make palindrome
+        while (l < r)
+        {
+            if (arr[l] != arr[r])
+            {
+                char max = (char)Math.Max(arr[l], arr[r]);
+                arr[l] = arr[r] = max;
+                changed[l] = changed[r] = true;
+                k--;
+            }
+            l++; r--;
+        }
+
+        if (k < 0) return "-1";
+
+        // Step 2: Maximize digits to 9
+        l = 0; r = n - 1;
+        while (l <= r)
+        {
+            if (l == r && k > 0)
+                arr[l] = '9';
+            else if (arr[l] != '9')
+            {
+                if (changed[l] || changed[r])
+                {
+                    if (k >= 1)
+                    {
+                        arr[l] = arr[r] = '9';
+                        k--;
+                    }
+                }
+                else if (k >= 2)
+                {
+                    arr[l] = arr[r] = '9';
+                    k -= 2;
+                }
+            }
+            l++; r--;
+        }
+
+        return new string(arr);
+    }
+
+    static void Main()
+    {
+        var nks = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+        int n = nks[0], k = nks[1];
+        string s = Console.ReadLine();
+        Console.WriteLine(HighestValuePalindrome(s, n, k));
+    }
+}
