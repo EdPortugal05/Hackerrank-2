@@ -1,0 +1,43 @@
+using System;
+using System.Linq;
+
+class Solution
+{
+    static int TwoStacks(int x, int[] a, int[] b)
+    {
+        int sum = 0, count = 0, i = 0, j = 0;
+
+        while (i < a.Length && sum + a[i] <= x)
+        {
+            sum += a[i];
+            i++;
+        }
+        count = i;
+
+        while (j < b.Length && i >= 0)
+        {
+            sum += b[j];
+            j++;
+            while (sum > x && i > 0)
+            {
+                i--;
+                sum -= a[i];
+            }
+            if (sum <= x) count = Math.Max(count, i + j);
+        }
+        return count;
+    }
+
+    static void Main()
+    {
+        int g = int.Parse(Console.ReadLine());
+        for (int t = 0; t < g; t++)
+        {
+            var nx = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+            int n = nx[0], m = nx[1], x = nx[2];
+            int[] a = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+            int[] b = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+            Console.WriteLine(TwoStacks(x, a, b));
+        }
+    }
+}
