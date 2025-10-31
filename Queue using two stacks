@@ -1,0 +1,32 @@
+using System;
+using System.Collections.Generic;
+
+class Solution
+{
+    static void Main()
+    {
+        Stack<int> stackIn = new();
+        Stack<int> stackOut = new();
+
+        int q = int.Parse(Console.ReadLine());
+        for (int i = 0; i < q; i++)
+        {
+            var parts = Console.ReadLine().Split(' ');
+            int type = int.Parse(parts[0]);
+            if (type == 1)
+            {
+                int x = int.Parse(parts[1]);
+                stackIn.Push(x);
+            }
+            else
+            {
+                if (stackOut.Count == 0)
+                    while (stackIn.Count > 0)
+                        stackOut.Push(stackIn.Pop());
+
+                if (type == 2) stackOut.Pop();
+                else if (type == 3) Console.WriteLine(stackOut.Peek());
+            }
+        }
+    }
+}
