@@ -1,0 +1,54 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Node
+{
+    public int data;
+    public Node left, right;
+    public Node(int d) { data = d; }
+}
+
+class Solution
+{
+    static void SwapAtDepth(Node root, int k, int depth)
+    {
+        if (root == null) return;
+        if (depth % k == 0)
+            (root.left, root.right) = (root.right, root.left);
+        SwapAtDepth(root.left, k, depth + 1);
+        SwapAtDepth(root.right, k, depth + 1);
+    }
+
+    static void InOrder(Node root)
+    {
+        if (root == null) return;
+        InOrder(root.left);
+        Console.Write(root.data + " ");
+        InOrder(root.right);
+    }
+
+    static void Main()
+    {
+        int n = int.Parse(Console.ReadLine());
+        Node[] nodes = new Node[n + 1];
+        for (int i = 1; i <= n; i++) nodes[i] = new Node(i);
+
+        for (int i = 1; i <= n; i++)
+        {
+            var parts = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+            if (parts[0] != -1) nodes[i].left = nodes[parts[0]];
+            if (parts[1] != -1) nodes[i].right = nodes[parts[1]];
+        }
+
+        int t = int.Parse(Console.ReadLine());
+        Node root = nodes[1];
+        for (int i = 0; i < t; i++)
+        {
+            int k = int.Parse(Console.ReadLine());
+            SwapAtDepth(root, k, 1);
+            InOrder(root);
+            Console.WriteLine();
+        }
+    }
+}
