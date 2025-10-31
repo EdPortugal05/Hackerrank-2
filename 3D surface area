@@ -1,0 +1,44 @@
+using System;
+using System.Linq;
+
+class Solution
+{
+    static int SurfaceArea(int[][] A)
+    {
+        int H = A.Length;
+        int W = A[0].Length;
+        int area = 0;
+
+        for (int i = 0; i < H; i++)
+        {
+            for (int j = 0; j < W; j++)
+            {
+                int h = A[i][j];
+                if (h > 0)
+                {
+                    area += 2; // top and bottom
+                    int up = (i == 0) ? 0 : A[i - 1][j];
+                    int down = (i == H - 1) ? 0 : A[i + 1][j];
+                    int left = (j == 0) ? 0 : A[i][j - 1];
+                    int right = (j == W - 1) ? 0 : A[i][j + 1];
+                    area += Math.Max(0, h - up);
+                    area += Math.Max(0, h - down);
+                    area += Math.Max(0, h - left);
+                    area += Math.Max(0, h - right);
+                }
+            }
+        }
+
+        return area;
+    }
+
+    static void Main()
+    {
+        var nm = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+        int n = nm[0], m = nm[1];
+        int[][] grid = new int[n][];
+        for (int i = 0; i < n; i++)
+            grid[i] = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+        Console.WriteLine(SurfaceArea(grid));
+    }
+}
