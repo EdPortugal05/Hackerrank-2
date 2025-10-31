@@ -1,0 +1,56 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Solution
+{
+    static void Main()
+    {
+        int n = int.Parse(Console.ReadLine());
+        Dictionary<int, List<int>> graph = new();
+
+        for (int i = 0; i < n; i++)
+        {
+            var edge = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+            int a = edge[0], b = edge[1];
+            if (!graph.ContainsKey(a)) graph[a] = new();
+            if (!graph.ContainsKey(b)) graph[b] = new();
+            graph[a].Add(b);
+            graph[b].Add(a);
+        }
+
+        HashSet<int> visited = new();
+        int minSize = int.MaxValue, maxSize = int.MinValue;
+
+        foreach (var node in graph.Keys)
+        {
+            if (!visited.Contains(node))
+            {
+                Queue<int> q = new();
+                q.Enqueue(node);
+                visited.Add(node);
+                int size = 0;
+
+                while (q.Count > 0)
+                {
+                    int cur = q.Dequeue();
+                    size++;
+                    foreach (int nei in graph[cur])
+                        if (!visited.Contains(nei))
+                        {
+                            visited.Add(nei);
+                            q.Enqueue(nei);
+                        }
+                }
+
+                if (size > 1)
+                {
+                    minSize = Math.Min(minSize, size);
+                    maxSize = Math.Max(maxSize, size);
+                }
+            }
+        }
+
+        Console.WriteLine($"{minSize} {maxSize}");
+    }
+}
