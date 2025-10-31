@@ -1,0 +1,32 @@
+using System;
+using System.Linq;
+
+class Solution
+{
+    static int NonDivisibleSubset(int k, int[] S)
+    {
+        int[] freq = new int[k];
+        foreach (int num in S)
+            freq[num % k]++;
+
+        int count = Math.Min(freq[0], 1);
+        for (int i = 1; i <= k / 2; i++)
+        {
+            if (i != k - i)
+                count += Math.Max(freq[i], freq[k - i]);
+        }
+
+        if (k % 2 == 0)
+            count++;
+
+        return count;
+    }
+
+    static void Main()
+    {
+        var input1 = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+        int n = input1[0], k = input1[1];
+        int[] S = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+        Console.WriteLine(NonDivisibleSubset(k, S));
+    }
+}
