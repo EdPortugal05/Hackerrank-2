@@ -1,0 +1,42 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Solution
+{
+    static int QueensAttack(int n, int k, int r_q, int c_q, List<List<int>> obstacles)
+    {
+        HashSet<(int, int)> obs = new HashSet<(int, int)>();
+        foreach (var o in obstacles) obs.Add((o[0], o[1]));
+
+        int[][] directions = {
+            new[]{1,0}, new[]{-1,0}, new[]{0,1}, new[]{0,-1},
+            new[]{1,1}, new[]{1,-1}, new[]{-1,1}, new[]{-1,-1}
+        };
+
+        int moves = 0;
+        foreach (var d in directions)
+        {
+            int r = r_q + d[0], c = c_q + d[1];
+            while (r >= 1 && r <= n && c >= 1 && c <= n && !obs.Contains((r, c)))
+            {
+                moves++;
+                r += d[0];
+                c += d[1];
+            }
+        }
+        return moves;
+    }
+
+    static void Main()
+    {
+        var input = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+        int n = input[0], k = input[1];
+        var pos = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+        int r_q = pos[0], c_q = pos[1];
+        List<List<int>> obstacles = new();
+        for (int i = 0; i < k; i++)
+            obstacles.Add(Console.ReadLine().Split(' ').Select(int.Parse).ToList());
+        Console.WriteLine(QueensAttack(n, k, r_q, c_q, obstacles));
+    }
+}
