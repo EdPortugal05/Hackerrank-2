@@ -1,0 +1,57 @@
+using System;
+using System.Linq;
+
+class Solution
+{
+    static double GetMedian(int[] freq, int d)
+    {
+        int count = 0;
+        if (d % 2 == 1)
+        {
+            int mid = d / 2 + 1;
+            for (int i = 0; i < 201; i++)
+            {
+                count += freq[i];
+                if (count >= mid) return i;
+            }
+        }
+        else
+        {
+            int m1 = -1, m2 = -1;
+            int first = d / 2, second = first + 1;
+            for (int i = 0; i < 201; i++)
+            {
+                count += freq[i];
+                if (m1 == -1 && count >= first) m1 = i;
+                if (count >= second) { m2 = i; break; }
+            }
+            return (m1 + m2) / 2.0;
+        }
+        return 0;
+    }
+
+    static int ActivityNotifications(int[] exp, int d)
+    {
+        int[] freq = new int[201];
+        for (int i = 0; i < d; i++) freq[exp[i]]++;
+
+        int alerts = 0;
+        for (int i = d; i < exp.Length; i++)
+        {
+            double median = GetMedian(freq, d);
+            if (exp[i] >= 2 * median) alerts++;
+
+            freq[exp[i - d]]--;
+            freq[exp[i]]++;
+        }
+        return alerts;
+    }
+
+    static void Main()
+    {
+        var nd = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+        int n = nd[0], d = nd[1];
+        int[] exp = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+        Console.WriteLine(ActivityNotifications(exp, d));
+    }
+}
