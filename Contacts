@@ -1,0 +1,46 @@
+using System;
+using System.Collections.Generic;
+
+class TrieNode
+{
+    public Dictionary<char, TrieNode> children = new();
+    public int count = 0;
+}
+
+class Solution
+{
+    static void Main()
+    {
+        TrieNode root = new();
+        int n = int.Parse(Console.ReadLine());
+
+        for (int i = 0; i < n; i++)
+        {
+            var parts = Console.ReadLine().Split(' ');
+            string op = parts[0], word = parts[1];
+
+            if (op == "add")
+            {
+                TrieNode node = root;
+                foreach (char c in word)
+                {
+                    if (!node.children.ContainsKey(c))
+                        node.children[c] = new TrieNode();
+                    node = node.children[c];
+                    node.count++;
+                }
+            }
+            else if (op == "find")
+            {
+                TrieNode node = root;
+                bool exists = true;
+                foreach (char c in word)
+                {
+                    if (!node.children.ContainsKey(c)) { exists = false; break; }
+                    node = node.children[c];
+                }
+                Console.WriteLine(exists ? node.count : 0);
+            }
+        }
+    }
+}
