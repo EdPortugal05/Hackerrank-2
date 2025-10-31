@@ -1,0 +1,44 @@
+using System;
+using System.Linq;
+
+class Solution
+{
+    static void AlmostSorted(int[] arr)
+    {
+        int[] sorted = arr.OrderBy(x => x).ToArray();
+        var diff = arr.Select((x, i) => x != sorted[i] ? i : -1).Where(i => i != -1).ToList();
+
+        if (diff.Count == 0)
+        {
+            Console.WriteLine("yes");
+            return;
+        }
+        else if (diff.Count == 2)
+        {
+            Console.WriteLine("yes");
+            Console.WriteLine($"swap {diff[0] + 1} {diff[1] + 1}");
+        }
+        else
+        {
+            int l = diff.First();
+            int r = diff.Last();
+            Array.Reverse(arr, l, r - l + 1);
+            if (arr.SequenceEqual(sorted))
+            {
+                Console.WriteLine("yes");
+                Console.WriteLine($"reverse {l + 1} {r + 1}");
+            }
+            else
+            {
+                Console.WriteLine("no");
+            }
+        }
+    }
+
+    static void Main()
+    {
+        int n = int.Parse(Console.ReadLine());
+        int[] arr = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+        AlmostSorted(arr);
+    }
+}
