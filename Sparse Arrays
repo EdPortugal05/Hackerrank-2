@@ -1,0 +1,24 @@
+using System;
+using System.Collections.Generic;
+
+class Solution
+{
+    static void Main()
+    {
+        int n = int.Parse(Console.ReadLine());
+        Dictionary<string, int> freq = new();
+        for (int i = 0; i < n; i++)
+        {
+            string s = Console.ReadLine();
+            if (freq.ContainsKey(s)) freq[s]++;
+            else freq[s] = 1;
+        }
+
+        int q = int.Parse(Console.ReadLine());
+        for (int i = 0; i < q; i++)
+        {
+            string query = Console.ReadLine();
+            Console.WriteLine(freq.ContainsKey(query) ? freq[query] : 0);
+        }
+    }
+}
