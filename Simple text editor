@@ -1,0 +1,43 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+class Solution
+{
+    static void Main()
+    {
+        int Q = int.Parse(Console.ReadLine());
+        StringBuilder text = new();
+        Stack<string> history = new();
+
+        for (int i = 0; i < Q; i++)
+        {
+            var parts = Console.ReadLine().Split(' ');
+            int type = int.Parse(parts[0]);
+
+            switch (type)
+            {
+                case 1:
+                    history.Push(text.ToString());
+                    text.Append(parts[1]);
+                    break;
+
+                case 2:
+                    history.Push(text.ToString());
+                    int k = int.Parse(parts[1]);
+                    text.Remove(text.Length - k, k);
+                    break;
+
+                case 3:
+                    int pos = int.Parse(parts[1]);
+                    Console.WriteLine(text[pos - 1]);
+                    break;
+
+                case 4:
+                    text.Clear();
+                    text.Append(history.Pop());
+                    break;
+            }
+        }
+    }
+}
