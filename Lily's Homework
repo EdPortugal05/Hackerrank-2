@@ -1,0 +1,45 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+class Solution
+{
+    static int CountSwaps(int[] arr, int[] sorted)
+    {
+        int n = arr.Length;
+        var map = arr.Select((v, i) => new { v, i }).ToDictionary(x => x.v, x => x.i);
+        bool[] visited = new bool[n];
+        int swaps = 0;
+
+        for (int i = 0; i < n; i++)
+        {
+            if (visited[i] || arr[i] == sorted[i]) continue;
+
+            int cycle = 0;
+            int j = i;
+            while (!visited[j])
+            {
+                visited[j] = true;
+                j = map[sorted[j]];
+                cycle++;
+            }
+            if (cycle > 0) swaps += cycle - 1;
+        }
+        return swaps;
+    }
+
+    static int LilysHomework(int[] arr)
+    {
+        int[] asc = arr.OrderBy(x => x).ToArray();
+        int[] desc = arr.OrderByDescending(x => x).ToArray();
+        return Math.Min(CountSwaps((int[])arr.Clone(), asc),
+                        CountSwaps((int[])arr.Clone(), desc));
+    }
+
+    static void Main()
+    {
+        int n = int.Parse(Console.ReadLine());
+        int[] arr = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+        Console.WriteLine(LilysHomework(arr));
+    }
+}
